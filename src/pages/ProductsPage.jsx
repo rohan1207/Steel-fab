@@ -1,0 +1,29 @@
+import Navbar from '@/components/layout/Navbar'
+import Footer from '@/components/layout/Footer'
+import ProductsSection from '@/components/sections/ProductsSection'
+import FeaturedProductsSection from '@/components/sections/FeaturedProductsSection'
+import CtaSection from '@/components/sections/CtaSection'
+
+export default function ProductsPage() {
+  return (
+    <main>
+      <Navbar />
+      <div className="pt-[72px]">
+        <div className="bg-gradient-to-br from-navy-950 to-indigo-900 text-white py-20 px-4">
+          <div className="max-w-7xl mx-auto">
+            <span className="inline-block text-[12px] font-600 tracking-widest uppercase text-indigo-300 mb-4">
+              Complete Product Range
+            </span>
+            <h1 className="font-display font-700 text-[2.6rem] sm:text-[3.2rem] text-white tracking-tight mb-4">
+              Our Products
+            </h1>
+          </div>
+        </div>
+        <ProductsSection />
+        <FeaturedProductsSection />
+        <CtaSection />
+      </div>
+      <Footer />
+    </main>
+  )
+}
