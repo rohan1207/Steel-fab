@@ -5,6 +5,7 @@
 @tailwind utilities;
 
 :root {
+  --navbar-height: 88px;
   --font-dm-sans: 'Inter', sans-serif;
   --font-syne: 'Manrope', sans-serif;
   --color-primary: #4338ca;
@@ -87,6 +88,15 @@ body {
   opacity: 1;
 }
 
+/* Compact pill — navbar CTA etc. */
+.btn-pill-compact {
+  padding: 9px 20px;
+  min-height: 38px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  gap: 6px;
+}
+
 .btn-primary {
   background: linear-gradient(135deg, #4338ca 0%, #3730a3 100%);
   color: white;
@@ -139,6 +149,10 @@ body {
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(203, 213, 225, 0.6);
   border-radius: 16px;
+}
+
+.pt-nav {
+  padding-top: var(--navbar-height);
 }
 
 .section-pad {
@@ -196,4 +210,22 @@ img {
     min-height: 32px;
     font-size: 0.74rem;
   }
+}
+
+.blog-content img {
+  border-radius: 0.75rem;
+  margin: 1.25rem 0;
+}
+.blog-content h2 {
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+.blog-content h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.blog-content p,
+.blog-content ul,
+.blog-content ol {
+  margin-bottom: 1rem;
 }

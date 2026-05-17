@@ -7,7 +7,7 @@ export default function NotFoundPage() {
   return (
     <main>
       <Navbar />
-      <div className="min-h-screen pt-[72px] flex flex-col bg-slate-50/60">
+      <div className="min-h-screen pt-nav flex flex-col bg-slate-50/60">
         <div className="flex-1 flex items-center justify-center px-4 py-20">
           <div className="text-center max-w-md">
             <div className="font-display font-800 text-[8rem] leading-none text-indigo-100 mb-4 select-none">404</div>

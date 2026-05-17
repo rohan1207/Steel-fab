@@ -8,20 +8,20 @@ import { ArrowRight, Award, Factory, Globe, TrendingUp } from 'lucide-react'
 
 const stats = [
   { value: '1995', label: 'Established', icon: TrendingUp },
-  { value: '3128', label: 'Sq. Meter Facility', icon: Factory },
-  { value: 'ISO 9001', label: 'DNV Certified', icon: Award },
-  { value: 'Global', label: 'Export Markets', icon: Globe },
+  { value: 'ISO 9001:2015', label: 'Certified Company', icon: Award },
+  { value: 'NSIC', label: 'Registered', icon: Factory } ,
+  { value: 'Pune', label: 'Maharashtra, India', icon: Globe } ,
 ]
 
-const shortText = `SEPL was established in the year 1995. Company is managed by team of directors with vast experience and expertise in their respective fields of Operation. SEPL is an ISO 9001:2008 Certified Company for Design. Steelfab Engineering Private Ltd.
+const MOTTO = 'Environment Friendly · Safe · Economical · Fast · Easy · Reliable'
 
-We take this opportunity to introduce ourselves as one of the largest and leading manufacturers of fluid handling System.`
+const shortText = `SEPL was established in the year 1995. The company is managed by a team of directors with vast experience and expertise in their respective fields of operation.
 
-const fullText = `SEPL was established in the year 1995. Company is managed by team of directors with vast experience and expertise in their respective fields of Operation. SEPL is an ISO 9001:2008 Certified Company for Design. Steelfab Engineering Private Ltd.
+SEPL is an ISO 9001:2015 certified company for design, manufacture and supply of Loading Arm Systems / Unloading Arm Systems, Independent Swivel Joints, Storage Tanks, Floating Suction Assemblies, Prover Tanks, and manufacturer of Mechanical Seal Support Systems — coolers, pressure vessels, thermosyphons and API Plan 52/53.`
 
-We take this opportunity to introduce ourselves as one of the largest and leading manufacturers of fluid handling System. Steelfab Engineering Pvt. Ltd (SEPL) came in existence in the year 1995, and since then there has been no looking back.
+const fullText = `${shortText}
 
-SEPL now has 3128 sq meter area with world class manufacturing facilities at two places. SEPL has achieved ISO 9001:2008 by DNV and also SEPL confirms to some of the highest design standard in India and world ISO, ASTM and BIS with sales volume nearly 10 cr.
+SEPL is an NSIC registered company for the above products. SEPL's quality policy is to enhance customer satisfaction by supplying world-class quality products at the right time and at the right price.
 
 Today we are leading Manufacturer, Supplier, Exporter of a wide range of Loading Arms, Unloading Arms, Loading Arms Systems, Unloading Arms Systems, Swivel Joints, Floating Suction Assemblies, Prover Tanks, Storage Tanks for Industrial applications. Our setup is situated in Pune, Maharashtra, India. Majorly we serve our products to customers in Saudi Arabia.`
 
@@ -84,9 +84,18 @@ export default function AboutSection() {
             <span className="inline-block text-[12px] font-600 tracking-widest uppercase text-indigo-600 mb-4">
               About Us
             </span>
-            <h2 className="font-display font-700 text-[2.1rem] sm:text-[2.5rem] text-navy-900 tracking-tight leading-[1.15] mb-6">
-              Three Decades of Engineering Excellence
+            <h2 className="font-display font-700 text-[2rem] sm:text-[2.45rem] text-navy-900 tracking-tight leading-[1.15] mb-3">
+              Welcome to Steelfab Engineering Pvt. Ltd.
             </h2>
+            <p className="text-[13px] sm:text-[14px] font-600 uppercase tracking-[0.08em] text-indigo-700 mb-2">
+              Steelfab Engineering
+            </p>
+            <p className="text-[12px] sm:text-[13px] text-slate-500 leading-relaxed mb-2">
+              {MOTTO}
+            </p>
+            <p className="text-[13px] font-600 uppercase tracking-wider text-navy-800 mb-6">
+              Fluid Transferring &amp; Handling Solution
+            </p>
 
             <div className="text-slate-600 text-[15px] leading-relaxed space-y-4">
               {(expanded ? fullText : shortText).split('\n\n').map((para, i) => (
@@ -106,12 +115,12 @@ export default function AboutSection() {
             </button>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/about/introduction" className="btn-pill btn-primary text-[13.5px]">
+              <Link href="/about" className="btn-pill btn-primary text-[13.5px]">
                 Learn About SEPL
                 <ArrowRight size={15} />
               </Link>
-              <Link href="/about/manufacturing" className="btn-pill btn-outline text-[13.5px]">
-                Our Facility
+              <Link href="/global" className="btn-pill btn-outline text-[13.5px]">
+                Global Exports
               </Link>
             </div>
           </motion.div>

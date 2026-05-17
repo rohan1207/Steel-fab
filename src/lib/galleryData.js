@@ -1,0 +1,83 @@
+/** Bento layout: hero | wide | tall | medium | default */
+export const GALLERY_ITEMS = [
+  {
+    id: 'loading-arms',
+    title: 'Loading Arm Systems',
+    category: 'Fluid Transfer',
+    image: '/steel1.jpg',
+    href: '/products/loading-arms',
+    layout: 'hero',
+  },
+  {
+    id: 'unloading-arms',
+    title: 'Unloading Arms',
+    category: 'Tanker & Marine',
+    image: '/steel2.jpg',
+    href: '/products/unloading-arms',
+    layout: 'tall',
+  },
+  {
+    id: 'floating-suction',
+    title: 'Floating Suction Assemblies',
+    category: 'Aviation Fuel',
+    image: '/steel3.jpg',
+    href: '/products/floating-suction',
+    layout: 'wide',
+  },
+  {
+    id: 'prover-tanks',
+    title: 'Prover Tanks',
+    category: 'Legal Metrology',
+    image: '/steel5.jpg',
+    href: '/products/prover-tanks',
+    layout: 'default',
+  },
+  {
+    id: 'swivel-joints',
+    title: 'Swivel Joints',
+    category: 'Precision Rotation',
+    image: '/steel2.jpg',
+    href: '/products/swivel-joints',
+    layout: 'tall',
+  },
+  {
+    id: 'test-aiders',
+    title: 'Test Aiders',
+    category: 'Quality Assurance',
+    image: '/steel1.jpg',
+    href: '/products/test-aiders',
+    layout: 'default',
+  },
+  {
+    id: 'manufacturing',
+    title: 'Shop Floor Excellence',
+    category: 'Hadapsar, Pune',
+    image: '/steel3.jpg',
+    href: '/about',
+    layout: 'wide',
+  },
+  {
+    id: 'pressure-vessels',
+    title: 'API Plan & Seal Support',
+    category: 'Mechanical Seals',
+    image: '/steel5.jpg',
+    href: '/products/loading-arms',
+    layout: 'medium',
+  },
+  {
+    id: 'storage-systems',
+    title: 'Storage & Terminal Solutions',
+    category: 'Custom Fabrication',
+    image: '/steel2.jpg',
+    href: '/enquiry',
+    layout: 'medium',
+  },
+]
+
+export const BENTO_LAYOUT_CLASS = {
+  hero: 'col-span-2 row-span-2 md:col-span-2 md:row-span-2 lg:col-span-3 lg:row-span-2',
+  wide: 'col-span-2 row-span-1 lg:col-span-2',
+  tall: 'col-span-1 row-span-2',
+  medium: 'col-span-2 row-span-1 lg:col-span-2',
+  default: 'col-span-1 row-span-1',
+}

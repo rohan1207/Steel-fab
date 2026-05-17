@@ -4,225 +4,310 @@ import Link from 'next/link'
 import {
   ArrowRight,
   BadgeCheck,
+  Building2,
   Factory,
-  Globe2,
-  Settings2,
+  MapPin,
+  Phone,
   ShieldCheck,
   Users2,
-  Wrench,
 } from 'lucide-react'
 
-const capabilityCards = [
+const MOTTO = 'Environment Friendly · Safe · Economical · Fast · Easy · Reliable'
+
+const directors = [
   {
-    title: 'Design & Engineering',
-    description:
-      'Application-focused engineering for loading, unloading and fluid transfer systems aligned to operating conditions.',
-    icon: Settings2,
+    name: 'Mr. B. D. Petakar',
+    role: 'Director',
+    address: 'Ganga Residency, Hadapsar, Pune - 411 028, Maharashtra, India',
+    phone: null,
   },
   {
-    title: 'Manufacturing Excellence',
-    description:
-      'Process-driven fabrication and quality checkpoints across every stage of production for consistent performance.',
-    icon: Factory,
-  },
-  {
-    title: 'Quality & Compliance',
-    description:
-      'Strong quality systems with standards-oriented manufacturing practices for dependable and traceable output.',
-    icon: ShieldCheck,
-  },
-  {
-    title: 'After-Sales Support',
-    description:
-      'Responsive support for installation guidance, maintenance workflows, upgrades and long-term operational reliability.',
-    icon: Wrench,
+    name: 'Mr. B. U. Hingane',
+    role: 'Director',
+    address: '108, Hingane Ali, Hadapsar, Pune - 411 028, Maharashtra, India',
+    phone: '+91 98810 70692',
   },
 ]
 
-const milestones = [
-  { year: '1995', title: 'Company Founded', detail: 'Established in Pune with a clear focus on engineered fluid handling systems.' },
-  { year: '2004', title: 'Facility Expansion', detail: 'Scaled manufacturing capacity to support larger industrial projects.' },
-  { year: '2012', title: 'Standards Maturity', detail: 'Strengthened quality frameworks and process consistency across product lines.' },
-  { year: '2020+', title: 'Pan-Industry Delivery', detail: 'Serving oil, chemical, terminal and process industries with customized solutions.' },
+const factories = [
+  {
+    name: 'Factory I',
+    address: 'Plot No. 37, Swami Vivekanand Co-op Indl. Estate, Hadapsar, Pune',
+    covered: '468',
+    open: '1158',
+  },
+  {
+    name: 'Factory II',
+    address: 'A-15, MIDC, Jejuri, Dist. Pune',
+    covered: '130',
+    open: '1970',
+  },
 ]
 
-const values = [
-  'Engineering-led decision making',
-  'Safety-first design principles',
-  'Long-life, maintainable products',
-  'Transparent customer communication',
-  'Continuous process improvement',
-  'Reliable project delivery',
+const qualityPolicyPoints = [
+  'We at Steelfab Engineering Pvt. Ltd. are committed to enhance customer satisfaction by manufacturing, supplying and providing service for the products and fulfilling their requirements of quality, timely delivery and competitive price.',
+  'We shall be sensitive to the needs of our customers and shall strive to exceed their expectations.',
+  'We shall train, motivate and involve our employees to continually improve their effectiveness, and that of our quality management system as well.',
+  'We shall ensure all our work processes are carried out in a safe manner without any harm to personnel or property.',
+  'We shall maintain ethical business practices and create a mutually beneficial relationship with our business partners.',
 ]
 
 export default function AboutPage() {
   return (
     <main>
       <Navbar />
-      <div className="pt-[72px]">
+      <div className="pt-nav">
+        {/* Hero */}
         <section className="relative overflow-hidden bg-gradient-to-br from-navy-950 via-navy-900 to-indigo-900 text-white">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_28%,rgba(129,140,248,0.18)_0%,rgba(129,140,248,0)_44%)]" />
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative">
             <span className="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.16em] text-indigo-300 font-600 mb-4">
               <BadgeCheck size={14} />
-              About SEPL
+              About Us
             </span>
-            <h1 className="font-display font-700 text-[2rem] sm:text-[3rem] lg:text-[3.6rem] leading-[1.08] tracking-tight max-w-4xl mb-5">
-              Engineering Reliable Fluid Handling Systems Since 1995
+            <h1 className="font-display font-700 text-[2rem] sm:text-[3rem] lg:text-[3.4rem] leading-[1.08] tracking-tight max-w-4xl mb-3">
+              Welcome to Steelfab Engineering Pvt. Ltd.
             </h1>
+            <p className="text-[13px] sm:text-[14px] font-600 uppercase tracking-wider text-indigo-200 mb-2">{MOTTO}</p>
             <p className="text-indigo-100 text-[14px] sm:text-[17px] leading-relaxed max-w-3xl mb-8">
-              Steelfab Engineering Pvt. Ltd. is a Pune-based manufacturer specializing in loading arms, unloading arms,
-              swivel joints, floating suction assemblies, prover tanks and allied engineered systems for industrial fluid transfer.
+              Fluid transferring and handling solutions — ISO 9001:2015 certified design, manufacture and supply since 1995.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/enquiry" className="btn-pill btn-primary">
-                Discuss Your Requirement
+                Contact Us
                 <ArrowRight size={15} />
               </Link>
               <Link href="/products" className="btn-pill btn-ghost-white">
-                Explore Products
+                Our Products
               </Link>
             </div>
           </div>
         </section>
 
-        <section className="bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+        {/* Quick facts */}
+        <section className="bg-white border-b border-slate-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 sm:p-5">
-                <div className="text-[11px] uppercase tracking-widest text-slate-500 mb-1">Established</div>
-                <div className="font-display font-700 text-[1.3rem] sm:text-[1.8rem] text-navy-900">1995</div>
-              </div>
-              <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 sm:p-5">
-                <div className="text-[11px] uppercase tracking-widest text-slate-500 mb-1">Core Focus</div>
-                <div className="font-display font-700 text-[1rem] sm:text-[1.2rem] text-navy-900">Fluid Handling Systems</div>
-              </div>
-              <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 sm:p-5">
-                <div className="text-[11px] uppercase tracking-widest text-slate-500 mb-1">Location</div>
-                <div className="font-display font-700 text-[1rem] sm:text-[1.2rem] text-navy-900">Pune, Maharashtra</div>
-              </div>
-              <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 sm:p-5">
-                <div className="text-[11px] uppercase tracking-widest text-slate-500 mb-1">Approach</div>
-                <div className="font-display font-700 text-[1rem] sm:text-[1.2rem] text-navy-900">Quality + Reliability</div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-slate-50/60 border-y border-slate-200/70">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-            <div className="max-w-3xl mb-8">
-              <h2 className="font-display font-700 text-[1.7rem] sm:text-[2.3rem] text-navy-900 tracking-tight mb-3">
-                Who We Are
-              </h2>
-              <p className="text-slate-600 text-[14px] sm:text-[15.5px] leading-relaxed">
-                We combine practical field understanding with engineering depth to deliver systems that are easy to operate,
-                safer in daily use, and built for long service life. Our solutions are designed to reduce downtime,
-                improve productivity and support compliance-focused operations.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
-              {capabilityCards.map((card) => {
-                const Icon = card.icon
-                return (
-                  <div
-                    key={card.title}
-                    className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 hover:border-indigo-200 hover:shadow-[0_12px_28px_rgba(67,56,202,0.09)] transition-all duration-250"
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center mb-3 sm:mb-4">
-                      <Icon size={18} className="text-indigo-600" />
-                    </div>
-                    <h3 className="font-display font-700 text-[14px] sm:text-[17px] text-navy-900 mb-2">{card.title}</h3>
-                    <p className="text-[12px] sm:text-[14px] text-slate-600 leading-relaxed">{card.description}</p>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
-              <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-5 sm:p-7">
-                <div className="flex items-center gap-2 mb-4">
-                  <Users2 size={18} className="text-indigo-600" />
-                  <h3 className="font-display font-700 text-[1.2rem] sm:text-[1.5rem] text-navy-900">Our Core Values</h3>
-                </div>
-                <div className="grid grid-cols-2 gap-2.5">
-                  {values.map((item) => (
-                    <div key={item} className="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-[12px] sm:text-[13.5px] text-slate-700">
-                      {item}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-7">
-                <div className="flex items-center gap-2 mb-4">
-                  <Globe2 size={18} className="text-indigo-600" />
-                  <h3 className="font-display font-700 text-[1.2rem] sm:text-[1.5rem] text-navy-900">Industry Coverage</h3>
-                </div>
-                <p className="text-[13px] sm:text-[15px] text-slate-600 leading-relaxed mb-4">
-                  Our systems serve petroleum, chemical, terminal and process sectors with a strong focus on safety, handling efficiency
-                  and long-term operational stability in critical fluid transfer applications.
-                </p>
-                <div className="rounded-xl border border-indigo-200 bg-indigo-50/60 px-4 py-3">
-                  <div className="text-[12px] sm:text-[13.5px] text-indigo-800 leading-relaxed">
-                    We work closely with operations and project teams to align configuration, material compatibility and performance
-                    requirements to actual site conditions.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-slate-50/60">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-            <h2 className="font-display font-700 text-[1.7rem] sm:text-[2.3rem] text-navy-900 tracking-tight mb-6">
-              Journey & Growth
-            </h2>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              {milestones.map((item) => (
-                <div
-                  key={item.year}
-                  className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 hover:border-indigo-200 transition-colors"
-                >
-                  <div className="font-display text-[1.1rem] sm:text-[1.4rem] font-700 text-indigo-700 mb-1">{item.year}</div>
-                  <div className="text-[13px] sm:text-[15px] font-600 text-navy-900 mb-2">{item.title}</div>
-                  <p className="text-[12px] sm:text-[13.5px] text-slate-600 leading-relaxed">{item.detail}</p>
+              {[
+                { label: 'Established', value: '1995' },
+                { label: 'Certification', value: 'ISO 9001:2015' },
+                { label: 'Registration', value: 'NSIC' },
+                { label: 'Head Office', value: 'Pune, MH' },
+              ].map((s) => (
+                <div key={s.label} className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 sm:p-5 text-center sm:text-left">
+                  <div className="text-[11px] uppercase tracking-widest text-slate-500 mb-1">{s.label}</div>
+                  <div className="font-display font-700 text-[1.1rem] sm:text-[1.35rem] text-navy-900">{s.value}</div>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="bg-white border-t border-slate-200">
+        {/* Company overview */}
+        <section className="bg-slate-50/60">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+            <h2 className="font-display font-700 text-[1.7rem] sm:text-[2.2rem] text-navy-900 tracking-tight mb-6">
+              About SEPL
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2 space-y-5 text-slate-600 text-[14px] sm:text-[15.5px] leading-relaxed">
+                <p>
+                  SEPL was established in the year 1995. The company is managed by a team of directors with vast experience
+                  and expertise in their respective fields of operation. SEPL is an ISO 9001:2015 certified company for design,
+                  manufacture and supply of loading arm systems / unloading arm systems, independent swivel joints, storage tanks,
+                  floating suction assemblies, prover tanks, and manufacturer of mechanical seal support systems viz. coolers,
+                  pressure vessels, thermosyphons and API Plan 52/53.
+                </p>
+                <p>
+                  SEPL is an NSIC registered company for the above products. SEPL&apos;s quality policy is to enhance customer
+                  satisfaction by supplying world-class quality products at the right time and at the right price.
+                </p>
+                <div className="rounded-2xl border border-indigo-200 bg-indigo-50/50 p-5">
+                  <div className="flex items-start gap-3">
+                    <Building2 size={20} className="text-indigo-600 mt-0.5 shrink-0" />
+                    <div>
+                      <h3 className="font-display font-700 text-[15px] text-navy-900 mb-1">Incorporation</h3>
+                      <p className="text-[13.5px] text-slate-700 leading-relaxed">
+                        Steelfab Engineering Private Ltd. was formed in the year 1995 vide Certificate of Incorporation
+                        No. <strong>11-85768</strong> dated <strong>21.02.1995</strong>.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 h-fit">
+                <h3 className="font-display font-700 text-[1.1rem] text-navy-900 mb-4">Product Scope</h3>
+                <ul className="space-y-2.5 text-[13px] text-slate-600">
+                  {[
+                    'Loading & Unloading Arm Systems',
+                    'Independent Swivel Joints',
+                    'Storage Tanks',
+                    'Floating Suction Assemblies',
+                    'Prover Tanks',
+                    'API Plan 52/53 & Seal Support',
+                    'Coolers & Pressure Vessels',
+                    'Thermosyphon Systems',
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Management & Directors */}
+        <section className="bg-white border-y border-slate-200/70">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+            <div className="max-w-3xl mb-8">
+              <div className="flex items-center gap-2 mb-3">
+                <Users2 size={20} className="text-indigo-600" />
+                <h2 className="font-display font-700 text-[1.7rem] sm:text-[2.1rem] text-navy-900">Management</h2>
+              </div>
+              <p className="text-slate-600 text-[14px] sm:text-[15px] leading-relaxed">
+                The company is managed by two directors who have the requisite qualifications and vast experience in their
+                respective fields.
+              </p>
+            </div>
+            <h3 className="font-display font-700 text-[1.15rem] text-navy-900 mb-4">Our Directors</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+              {directors.map((d) => (
+                <div key={d.name} className="rounded-2xl border border-slate-200 bg-slate-50/50 p-5 sm:p-6 hover:border-indigo-200 transition-colors">
+                  <div className="text-[11px] uppercase tracking-wider text-indigo-600 font-600 mb-1">{d.role}</div>
+                  <h4 className="font-display font-700 text-[1.1rem] sm:text-[1.25rem] text-navy-900 mb-3">{d.name}</h4>
+                  <div className="flex items-start gap-2 text-[13px] text-slate-600 mb-2">
+                    <MapPin size={15} className="text-indigo-500 mt-0.5 shrink-0" />
+                    <span>{d.address}</span>
+                  </div>
+                  {d.phone && (
+                    <a href={`tel:${d.phone.replace(/\s/g, '')}`} className="inline-flex items-center gap-2 text-[13px] font-600 text-indigo-700 hover:text-indigo-900">
+                      <Phone size={14} />
+                      {d.phone}
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 rounded-2xl border border-indigo-200 bg-indigo-50/40 p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-xl bg-indigo-100 flex items-center justify-center">
+                  <Phone size={18} className="text-indigo-600" />
+                </div>
+                <div>
+                  <div className="text-[12px] uppercase tracking-wider text-slate-500 font-600">Marketing</div>
+                  <a href="tel:+918888855975" className="font-display font-700 text-[1rem] sm:text-[1.1rem] text-navy-900 hover:text-indigo-700">
+                    +918888855975
+                  </a>
+                  <span className="text-slate-400 mx-2">/</span>
+                  <a href="tel:+919922913031" className="font-display font-700 text-[1rem] sm:text-[1.1rem] text-navy-900 hover:text-indigo-700">
+                    99229 13031
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Factory area */}
+        <section className="bg-slate-50/60">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+            <div className="flex items-center gap-2 mb-6">
+              <Factory size={20} className="text-indigo-600" />
+              <h2 className="font-display font-700 text-[1.7rem] sm:text-[2.1rem] text-navy-900">Factory Area</h2>
+            </div>
+            <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+              <table className="w-full min-w-[640px] text-left text-[13px] sm:text-[14px]">
+                <thead>
+                  <tr className="bg-navy-900 text-white">
+                    <th className="px-4 sm:px-6 py-3.5 font-600">Factory Address</th>
+                    <th className="px-4 sm:px-6 py-3.5 font-600 whitespace-nowrap">Covered (sq. m)</th>
+                    <th className="px-4 sm:px-6 py-3.5 font-600 whitespace-nowrap">Open usable (sq. m)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {factories.map((f, i) => (
+                    <tr key={f.name} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50/80'}>
+                      <td className="px-4 sm:px-6 py-4 text-slate-700 border-t border-slate-100">
+                        <span className="font-600 text-navy-900 block mb-0.5">{f.name}</span>
+                        {f.address}
+                      </td>
+                      <td className="px-4 sm:px-6 py-4 font-display font-700 text-navy-900 border-t border-slate-100">{f.covered}</td>
+                      <td className="px-4 sm:px-6 py-4 font-display font-700 text-navy-900 border-t border-slate-100">{f.open}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-[12px] text-slate-500 mt-3">
+              Total manufacturing footprint across Hadapsar and Jejuri facilities.
+            </p>
+          </div>
+        </section>
+
+        {/* Quality policy */}
+        <section className="bg-white border-y border-slate-200/70">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+            <div className="flex items-center gap-2 mb-6">
+              <ShieldCheck size={22} className="text-indigo-600" />
+              <h2 className="font-display font-700 text-[1.7rem] sm:text-[2.1rem] text-navy-900">Quality Policy</h2>
+            </div>
+            <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-indigo-50/30 p-6 sm:p-8">
+              <div className="space-y-4">
+                {qualityPolicyPoints.map((point, i) => (
+                  <div key={i} className="flex gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-indigo-600 text-white text-[11px] font-700 flex items-center justify-center mt-0.5">
+                      {i + 1}
+                    </span>
+                    <p className="text-slate-700 text-[14px] sm:text-[15px] leading-relaxed">{point}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Infrastructure */}
+        <section className="bg-indigo-50/40 border-b border-indigo-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14">
+            <h2 className="font-display font-700 text-[1.5rem] sm:text-[1.9rem] text-navy-900 mb-4">New In-House Infrastructure</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {['In-house Blasting', 'Paint Booth & Painting Room', 'Dedicated Passivation Process'].map((t) => (
+                <div key={t} className="rounded-2xl border border-indigo-200 bg-white p-4 sm:p-5 text-[13px] sm:text-[14px] font-600 text-slate-800 text-center sm:text-left">
+                  {t}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14">
             <div className="rounded-2xl bg-gradient-to-r from-navy-900 to-indigo-900 text-white p-6 sm:p-8 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
               <div>
-                <h3 className="font-display font-700 text-[1.3rem] sm:text-[1.8rem] mb-2">
-                  Looking for the right fluid handling solution?
-                </h3>
+                <h3 className="font-display font-700 text-[1.3rem] sm:text-[1.8rem] mb-2">Partner with SEPL</h3>
                 <p className="text-indigo-100 text-[13px] sm:text-[15px] leading-relaxed max-w-2xl">
-                  Share your process details with us and our engineering team will recommend a practical and reliable configuration.
+                  Discuss your fluid handling requirement with our engineering and sales team.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
                 <Link href="/enquiry" className="btn-pill btn-primary w-full sm:w-auto justify-center">
                   Start an Enquiry
                 </Link>
-                <Link href="/products" className="btn-pill btn-ghost-white w-full sm:w-auto justify-center">
-                  View Products
+                <Link href="/contact" className="btn-pill btn-ghost-white w-full sm:w-auto justify-center">
+                  Contact Us
                 </Link>
               </div>
             </div>
           </div>
         </section>
+        
       </div>
       <Footer />
     </main>
   )
+
 }

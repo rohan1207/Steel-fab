@@ -3,15 +3,17 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ChevronDown } from 'lucide-react'
-import { NAV_ITEMS } from '@/lib/data'
+import { Menu, X, ArrowRight, ChevronDown, ChevronRight } from 'lucide-react'
+import { NAV_ITEMS, getPrimaryNavItems } from '@/lib/data'
 import { cn } from '@/lib/utils'
+
+const primaryNav = getPrimaryNavItems()
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
-  const [mobileOpen, setMobileOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [expandedSection, setExpandedSection] = useState(null)
   const [activeDropdown, setActiveDropdown] = useState(null)
-  const [mobileExpanded, setMobileExpanded] = useState(null)
   const dropdownRef = useRef(null)
 
   useEffect(() => {
@@ -19,6 +21,11 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [menuOpen])
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -30,14 +37,10 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-    return () => { document.body.style.overflow = '' }
-  }, [mobileOpen])
+  const closeMenu = () => {
+    setMenuOpen(false)
+    setExpandedSection(null)
+  }
 
   return (
     <>
@@ -53,56 +56,56 @@ export default function Navbar() {
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-[72px] lg:h-[76px]">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 sm:gap-3 group min-w-0 max-w-[76%] lg:max-w-none">
+          <div className="flex items-center justify-between h-[80px] lg:h-[88px] gap-4">
+            <Link href="/" className="flex items-center gap-3 sm:gap-4 group min-w-0 flex-shrink">
               <img
                 src="/logo.png"
                 alt="SEPL logo"
-                className="w-[60px] h-[60px] sm:w-[66px] sm:h-[66px] object-contain flex-shrink-0"
+                className="w-[64px] h-[64px] sm:w-[72px] sm:h-[72px] xl:w-[78px] xl:h-[78px] object-contain flex-shrink-0"
               />
-              <div className="min-w-0">
-                <div className="font-sans font-700 text-[11.5px] sm:text-[13px] lg:text-[14px] leading-tight text-slate-900 tracking-[0.01em] truncate">
+              <div className="min-w-0 hidden sm:block">
+                <div className="font-sans font-700 text-[12px] sm:text-[14px] xl:text-[15px] leading-tight text-slate-900 tracking-[0.01em] truncate max-w-[160px] md:max-w-none">
                   Steelfab Engineering Pvt. Ltd.
                 </div>
-                <div className="text-[9px] sm:text-[10px] text-slate-500 font-500 mt-0.5 tracking-[0.015em] truncate hidden sm:block">
+                <div className="text-[10px] sm:text-[11px] text-slate-500 font-500 mt-1 tracking-[0.015em] truncate hidden md:block">
                   AN ISO 9001:2015 Certified Company
                 </div>
               </div>
             </Link>
 
-            {/* Desktop Nav */}
-            <div ref={dropdownRef} className="hidden lg:flex items-center gap-1">
-              {NAV_ITEMS.map((item) =>
-                item.highlight ? null : (
-                  <div
+            {/* 6 primary links — dropdown on About & Products */}
+            <div
+              ref={dropdownRef}
+              className="hidden xl:flex items-center gap-2 sm:gap-3 flex-1 justify-center max-w-3xl px-2"
+            >
+              {primaryNav.map((item) =>
+                item.children ? (
+                  <motion.div
                     key={item.label}
                     className="relative"
-                    onMouseEnter={() => item.children && setActiveDropdown(item.label)}
+                    onMouseEnter={() => setActiveDropdown(item.label)}
                     onMouseLeave={() => setActiveDropdown(null)}
                   >
                     <Link
                       href={item.href}
                       className={cn(
-                        'nav-link-underline flex items-center gap-1 px-3.5 py-2 text-[13.5px] font-600 rounded-xl transition-all duration-200',
-                        'text-slate-700 hover:text-indigo-700 hover:bg-indigo-50/80'
+                        'nav-link-underline flex items-center gap-1 px-4 py-2.5 text-[15px] font-600 rounded-xl transition-all whitespace-nowrap',
+                        activeDropdown === item.label
+                          ? 'text-indigo-700 bg-indigo-50/80'
+                          : 'text-slate-700 hover:text-indigo-700 hover:bg-indigo-50/80'
                       )}
                     >
                       {item.label}
-                      {item.children && (
-                        <ChevronDown
-                          size={13}
-                          className={cn(
-                            'transition-transform duration-200 text-slate-400',
-                            activeDropdown === item.label && 'rotate-180 text-indigo-500'
-                          )}
-                        />
-                      )}
+                      <ChevronDown
+                        size={15}
+                        className={cn(
+                          'text-slate-400 transition-transform duration-200',
+                          activeDropdown === item.label && 'rotate-180 text-indigo-500'
+                        )}
+                      />
                     </Link>
-
-                    {/* Dropdown */}
                     <AnimatePresence>
-                      {item.children && activeDropdown === item.label && (
+                      {activeDropdown === item.label && (
                         <motion.div
                           initial={{ opacity: 0, y: 8, scale: 0.97 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -110,14 +113,14 @@ export default function Navbar() {
                           transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
                           className="absolute top-full left-0 pt-2 z-50"
                         >
-                          <div className="bg-white/95 backdrop-blur-md border border-slate-200 rounded-2xl shadow-[0_16px_36px_rgba(15,23,42,0.12)] p-2 min-w-[220px]">
+                          <div className="bg-white border border-slate-200 rounded-2xl shadow-[0_12px_32px_rgba(15,23,42,0.14)] p-2 min-w-[240px]">
                             {item.children.map((child) => (
                               <Link
                                 key={child.label}
                                 href={child.href}
-                                className="flex items-center gap-3 px-4 py-2.5 text-[13px] font-500 text-slate-700 hover:text-indigo-700 hover:bg-indigo-50 rounded-xl transition-all duration-150 group"
+                                className="flex items-center gap-3 px-4 py-2.5 text-[14px] font-500 text-slate-700 hover:text-indigo-700 hover:bg-indigo-50 rounded-xl transition-all group"
                               >
-                                <span className="w-1.5 h-1.5 rounded-full bg-indigo-200 group-hover:bg-indigo-500 transition-colors" />
+                                <span className="w-1.5 h-1.5 rounded-full bg-indigo-200 group-hover:bg-indigo-500 transition-colors shrink-0" />
                                 {child.label}
                               </Link>
                             ))}
@@ -125,95 +128,117 @@ export default function Navbar() {
                         </motion.div>
                       )}
                     </AnimatePresence>
-                  </div>
+                  </motion.div>
+                ) : (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className="nav-link-underline px-4 py-2.5 text-[15px] font-600 text-slate-700 hover:text-indigo-700 hover:bg-indigo-50/80 rounded-xl transition-all whitespace-nowrap"
+                  >
+                    {item.label}
+                  </Link>
                 )
               )}
             </div>
 
-            {/* CTA + Mobile Toggle */}
-            <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+            <div className="flex items-center gap-3 flex-shrink-0">
               <Link
                 href="/enquiry"
-                className="btn-pill btn-primary hidden md:inline-flex text-[13px] py-2.5 px-5 shadow-[0_8px_20px_rgba(67,56,202,0.25)]"
+                className="btn-pill btn-primary btn-pill-compact hidden sm:inline-flex shadow-[0_6px_16px_rgba(67,56,202,0.22)]"
               >
                 Enquiry
               </Link>
               <button
-                onClick={() => setMobileOpen(!mobileOpen)}
-                className="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center text-slate-700 hover:bg-slate-100 border border-slate-200/80 transition-colors"
-                aria-label="Toggle menu"
+                type="button"
+                onClick={() => setMenuOpen(true)}
+                className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center text-slate-800 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 transition-colors"
+                aria-label="Open full menu"
+                aria-expanded={menuOpen}
               >
-                {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+                <Menu size={24} strokeWidth={2} />
               </button>
             </div>
           </div>
         </div>
       </motion.nav>
 
-      {/* Mobile Menu */}
+      {/* Full-screen menu */}
       <AnimatePresence>
-        {mobileOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 bg-navy-950/30 backdrop-blur-sm z-40 lg:hidden"
-              onClick={() => setMobileOpen(false)}
-            />
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="fixed top-0 right-0 bottom-0 w-[90vw] max-w-[340px] bg-white z-50 lg:hidden shadow-2xl flex flex-col"
-            >
-              <div className="flex items-center justify-between px-6 h-[72px] border-b border-slate-100">
-                <span className="font-sans font-700 text-navy-900 text-[16px] tracking-[0.01em]">Menu</span>
-                <button
-                  onClick={() => setMobileOpen(false)}
-                  className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-500 hover:bg-slate-100 border border-slate-200/70"
-                >
-                  <X size={18} />
-                </button>
-              </div>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-[100] bg-navy-950 text-white flex flex-col"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site navigation"
+          >
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(99,102,241,0.25)_0%,transparent_50%)] pointer-events-none" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_80%,rgba(14,165,233,0.12)_0%,transparent_45%)] pointer-events-none" />
 
-              <div className="flex-1 overflow-y-auto py-4 px-3">
-                {NAV_ITEMS.map((item, i) => (
-                  <div key={item.label}>
+            <div className="relative flex items-center justify-between px-4 sm:px-8 h-[72px] border-b border-white/10">
+              <span className="font-display font-700 text-lg tracking-tight text-white/90">Menu</span>
+              <button
+                type="button"
+                onClick={closeMenu}
+                className="w-11 h-11 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 border border-white/20 transition-colors"
+                aria-label="Close menu"
+              >
+                <X size={22} />
+              </button>
+            </div>
+
+            <div className="relative flex-1 overflow-y-auto px-4 sm:px-8 py-6 sm:py-10">
+              <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-2">
+                {NAV_ITEMS.filter((item) => !item.highlight).map((item, i) => (
+                  <motion.div
+                    key={item.label}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.05 + i * 0.04, duration: 0.35 }}
+                  >
                     {item.children ? (
-                      <div>
+                      <div className="mb-4">
                         <button
-                          onClick={() => setMobileExpanded(mobileExpanded === item.label ? null : item.label)}
-                          className="w-full flex items-center justify-between px-4 py-3 text-[14px] font-600 text-slate-700 hover:text-indigo-700 hover:bg-indigo-50 rounded-xl transition-colors"
+                          type="button"
+                          onClick={() => setExpandedSection(expandedSection === item.label ? null : item.label)}
+                          className="w-full flex items-center justify-between group py-2"
                         >
-                          {item.label}
-                          <ChevronDown
-                            size={15}
+                          <Link
+                            href={item.href}
+                            onClick={closeMenu}
+                            className="font-display font-700 text-[1.35rem] sm:text-[1.6rem] text-white hover:text-indigo-300 transition-colors"
+                          >
+                            {item.label}
+                          </Link>
+                          <ChevronRight
+                            size={20}
                             className={cn(
-                              'transition-transform duration-200 text-slate-400',
-                              mobileExpanded === item.label && 'rotate-180 text-indigo-500'
+                              'text-indigo-400 transition-transform duration-200',
+                              expandedSection === item.label && 'rotate-90'
                             )}
                           />
                         </button>
                         <AnimatePresence>
-                          {mobileExpanded === item.label && (
+                          {expandedSection === item.label && (
                             <motion.div
                               initial={{ height: 0, opacity: 0 }}
                               animate={{ height: 'auto', opacity: 1 }}
                               exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.2 }}
-                              className="overflow-hidden"
+                              transition={{ duration: 0.22 }}
+                              className="overflow-hidden pl-1"
                             >
-                              <div className="ml-4 pl-4 border-l border-indigo-100 py-1 mb-1">
+                              <div className="pt-2 pb-3 space-y-1 border-l-2 border-indigo-500/50 ml-1 pl-4">
                                 {item.children.map((child) => (
                                   <Link
                                     key={child.label}
                                     href={child.href}
-                                    onClick={() => setMobileOpen(false)}
-                                    className="block px-3 py-2.5 text-[13px] font-500 text-slate-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors"
+                                    onClick={closeMenu}
+                                    className="flex items-center gap-2 py-2 text-[14px] sm:text-[15px] text-indigo-100/90 hover:text-white transition-colors group"
                                   >
+                                    <ArrowRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all text-indigo-400" />
                                     {child.label}
                                   </Link>
                                 ))}
@@ -225,32 +250,48 @@ export default function Navbar() {
                     ) : (
                       <Link
                         href={item.href}
-                        onClick={() => setMobileOpen(false)}
-                        className={cn(
-                          'block px-4 py-3 text-[14px] font-600 rounded-xl transition-colors',
-                          item.highlight
-                            ? 'text-indigo-700 bg-indigo-50 hover:bg-indigo-100 mt-2'
-                            : 'text-slate-700 hover:text-indigo-700 hover:bg-indigo-50'
-                        )}
+                        onClick={closeMenu}
+                        className="block font-display font-700 text-[1.35rem] sm:text-[1.6rem] text-white hover:text-indigo-300 py-2 transition-colors mb-2"
                       >
                         {item.label}
                       </Link>
                     )}
-                  </div>
+                  </motion.div>
                 ))}
               </div>
 
-              <div className="px-4 py-5 border-t border-slate-100">
-                <Link
-                  href="/enquiry"
-                  onClick={() => setMobileOpen(false)}
-                  className="btn-pill btn-primary w-full justify-center"
-                >
-                  Send Enquiry
-                </Link>
+              {/* Mobile / tablet quick primary row */}
+              <div className="xl:hidden max-w-4xl mx-auto mt-8 pt-8 border-t border-white/10">
+                <p className="text-[11px] uppercase tracking-widest text-indigo-300 mb-3">Quick links</p>
+                <div className="flex flex-wrap gap-2">
+                  {primaryNav.map((item) => (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      onClick={closeMenu}
+                      className="px-3.5 py-2 rounded-full text-[12px] font-600 bg-white/10 hover:bg-indigo-600 border border-white/15 transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </motion.div>
-          </>
+            </div>
+
+            <div className="relative px-4 sm:px-8 py-5 border-t border-white/10 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+              <p className="text-[13px] text-indigo-200/80 hidden sm:block">
+                Steelfab Engineering Pvt. Ltd. · Pune, Maharashtra
+              </p>
+              <Link
+                href="/enquiry"
+                onClick={closeMenu}
+                className="btn-pill btn-primary justify-center sm:min-w-[200px]"
+              >
+                Send Enquiry
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </>

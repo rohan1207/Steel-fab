@@ -1,5 +1,4 @@
 'use client'
-
 import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -7,13 +6,16 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 import { HERO_SLIDES } from '@/lib/data'
 
+
+const SLIDE_INTERVAL_MS = 3000
+
 const textVariants = {
   enter: { opacity: 0, y: 24 },
   center: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: -16 },
 }
 
-const imageVariants = {
+ const imageVariants = {
   enter: { opacity: 0, scale: 1.04 },
   center: { opacity: 1, scale: 1 },
   exit: { opacity: 0, scale: 0.98 },
@@ -33,7 +35,7 @@ export default function HeroSection() {
 
   useEffect(() => {
     if (paused) return
-    const timer = setInterval(next, 5500)
+    const timer = setInterval(next, SLIDE_INTERVAL_MS)
     return () => clearInterval(timer)
   }, [next, paused])
 
@@ -64,6 +66,11 @@ export default function HeroSection() {
               priority
               className="object-cover"
               sizes="100vw"
+              onError={(e) => {
+                if (slide.imageFallback && e.currentTarget.src !== slide.imageFallback) {
+                  e.currentTarget.src = slide.imageFallback
+                }
+              }}
             />
           </motion.div>
         </AnimatePresence>
@@ -79,7 +86,7 @@ export default function HeroSection() {
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-[600px]">
+        <div className="max-w-[640px]">
           {/* Tag */}
           <AnimatePresence mode="wait">
             <motion.div
@@ -122,7 +129,7 @@ export default function HeroSection() {
               animate="center"
               exit="exit"
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.12 }}
-              className="text-slate-200 text-[14px] sm:text-[16px] leading-relaxed mb-7 sm:mb-8 max-w-[480px] drop-shadow-[0_2px_12px_rgba(2,6,23,0.55)]"
+              className="text-slate-200 text-[14px] sm:text-[16px] leading-relaxed mb-7 sm:mb-8 max-w-[560px] drop-shadow-[0_2px_12px_rgba(2,6,23,0.55)]"
             >
               {slide.subline}
             </motion.p>
@@ -143,8 +150,8 @@ export default function HeroSection() {
                 Request a Quote
                 <ArrowRight size={16} />
               </Link>
-              <Link href="/products" className="btn-pill btn-ghost-white">
-                Explore Products
+              <Link href={slide.href || '/products'} className="btn-pill btn-ghost-white">
+                {slide.ctaLabel || 'Explore Products'}
               </Link>
             </motion.div>
           </AnimatePresence>
@@ -192,7 +199,7 @@ export default function HeroSection() {
                     className="absolute inset-0 bg-indigo-400 origin-left"
                     initial={{ scaleX: 0 }}
                     animate={{ scaleX: 1 }}
-                    transition={{ duration: 5.5, ease: 'linear' }}
+                    transition={{ duration: SLIDE_INTERVAL_MS / 1000, ease: 'linear' }}
                     key={`prog-${current}`}
                   />
                 )}

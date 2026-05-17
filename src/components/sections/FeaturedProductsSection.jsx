@@ -1,12 +1,15 @@
 'use client'
 
-import { useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useInView } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
+import { useProducts } from '@/hooks/useProducts'
 
-const featuredProducts = [
+const ACCENTS = ['#4338ca', '#0ea5e9', '#0891b2', '#7c3aed']
+
+const STATIC_FEATURED = [
   {
     id: 'loading-arms',
     title: 'Loading Arm Systems',
@@ -51,7 +54,7 @@ function FeaturedCard({ product, index }) {
       initial={{ opacity: 0, y: 32 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative rounded-2xl overflow-hidden border border-slate-200/80 bg-white hover:border-transparent hover:shadow-[0_12px_48px_rgba(30,27,75,0.14)] transition-all duration-400"
+      className="group relative rounded-2xl overflow-hidden border border-slate-200/80 bg-white hover:border-transparent hover:shadow-[0_12px_48px_rgba(30,27,75,0.14)] transition-all duration-400 flex flex-col h-full"
     >
       {/* Image */}
       <div className="relative h-40 sm:h-52 overflow-hidden">
@@ -111,8 +114,28 @@ function FeaturedCard({ product, index }) {
 }
 
 export default function FeaturedProductsSection() {
+  const { products, fromApi } = useProducts()
   const headerRef = useRef(null)
   const headerInView = useInView(headerRef, { once: true, margin: '-60px' })
+
+  const mapToFeatured = (list) =>
+    list.map((p, i) => ({
+      id: p.id,
+      title: p.title,
+      description: p.description,
+      image: p.image,
+      accent: ACCENTS[i % ACCENTS.length],
+      href: p.href,
+    }))
+
+  const featuredProducts = useMemo(() => {
+    if (fromApi && products.length) {
+      const featured = products.filter((p) => p.isFeatured)
+      const source = featured.length >= 4 ? featured : products
+      return mapToFeatured(source).slice(0, 4)
+    }
+    return STATIC_FEATURED.slice(0, 4)
+  }, [products, fromApi])
 
   return (
     <section className="section-pad bg-white">
@@ -138,7 +161,7 @@ export default function FeaturedProductsSection() {
           </Link>
         </motion.div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 items-stretch">
           {featuredProducts.map((p, i) => (
             <FeaturedCard key={p.id} product={p} index={i} />
           ))}

@@ -1,38 +1,51 @@
-'use client'
-
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
-import Link from 'next/link'
-import { Download, FileBadge2, FileText, Filter, ShieldCheck } from 'lucide-react'
+import { fetchDownloads, trackLead } from '@/lib/api'
+import { Download, FileBadge2, Filter, ShieldCheck } from 'lucide-react'
 
-const resources = [
-  { title: 'Loading Arm Systems - Product Brochure', type: 'Brochure', size: '2.4 MB', updated: 'Jan 2026' },
-  { title: 'Unloading Arm Systems - Technical Datasheet', type: 'Datasheet', size: '1.2 MB', updated: 'Dec 2025' },
-  { title: 'Floating Suction Assemblies - Catalog', type: 'Catalog', size: '2.0 MB', updated: 'Nov 2025' },
-  { title: 'Prover Tanks - Product Details', type: 'Brochure', size: '1.5 MB', updated: 'Jan 2026' },
-  { title: 'Swivel Joints - Technical Datasheet', type: 'Datasheet', size: '1.1 MB', updated: 'Oct 2025' },
-  { title: 'Quality & Compliance Certificate Pack', type: 'Certificate', size: '0.9 MB', updated: 'Feb 2026' },
-]
-
-const filters = ['All', 'Brochure', 'Datasheet', 'Catalog', 'Certificate']
+const filters = ['All', 'Brochure', 'Datasheet', 'Catalog', 'Certificate', 'Policy']
 
 export default function DownloadPage() {
+  const [resources, setResources] = useState([])
   const [activeFilter, setActiveFilter] = useState('All')
+
+  useEffect(() => {
+    fetchDownloads().then(setResources).catch(() => setResources([]))
+  }, [])
+
   const filteredResources = useMemo(
     () => (activeFilter === 'All' ? resources : resources.filter((item) => item.type === activeFilter)),
-    [activeFilter]
+    [activeFilter, resources]
   )
+
+  const handleDownload = async (item) => {
+    const isCompliance = item.category === 'compliance' || ['Certificate', 'Policy'].includes(item.type)
+    try {
+      await trackLead({
+        type: isCompliance ? 'compliance_view' : 'asset_download',
+        sourcePage: '/download',
+        assetId: item._id,
+        assetTitle: item.title,
+        complianceDoc: isCompliance ? item.title : '',
+        subject: isCompliance ? `Compliance: ${item.title}` : `Download: ${item.title}`,
+      })
+    } catch {
+      /* still allow download if tracking fails */
+    }
+    if (item.fileUrl) window.open(item.fileUrl, '_blank', 'noopener,noreferrer')
+  }
 
   return (
     <main>
       <Navbar />
-      <div className="pt-[72px]">
+      <div className="pt-nav">
         <section className="bg-white border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-18">
             <h1 className="font-display font-700 text-[2rem] sm:text-[2.8rem] text-navy-900 tracking-tight mb-3">Downloads Center</h1>
             <p className="text-slate-600 text-[14px] sm:text-[16px] max-w-3xl">
-              Access latest brochures, technical documents and compliance resources in one place.
+              Brochures, technical datasheets, and compliance documents. Managed via admin CMS.
             </p>
           </div>
         </section>
@@ -47,6 +60,7 @@ export default function DownloadPage() {
               {filters.map((filter) => (
                 <button
                   key={filter}
+                  type="button"
                   onClick={() => setActiveFilter(filter)}
                   className={`px-3.5 py-2 rounded-full text-[12px] sm:text-[13px] font-600 border transition-all ${
                     activeFilter === filter
@@ -59,28 +73,35 @@ export default function DownloadPage() {
               ))}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-              {filteredResources.map((item) => (
-                <div
-                  key={item.title}
-                  className="rounded-2xl border border-slate-200 bg-white p-5 hover:border-indigo-200 hover:shadow-[0_10px_30px_rgba(67,56,202,0.08)] transition-all"
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="inline-flex items-center gap-1.5 text-[11px] font-600 uppercase tracking-wider text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-1 rounded-full">
-                      <FileBadge2 size={12} />
-                      {item.type}
-                    </span>
-                    <span className="text-[11px] text-slate-500">{item.size}</span>
+            {filteredResources.length === 0 ? (
+              <p className="text-slate-500 text-sm">No documents published yet. Check back soon or contact us for a document pack.</p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                {filteredResources.map((item) => (
+                  <div
+                    key={item._id}
+                    className="rounded-2xl border border-slate-200 bg-white p-5 hover:border-indigo-200 hover:shadow-[0_10px_30px_rgba(67,56,202,0.08)] transition-all"
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="inline-flex items-center gap-1.5 text-[11px] font-600 uppercase tracking-wider text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-1 rounded-full">
+                        <FileBadge2 size={12} />
+                        {item.type}
+                      </span>
+                      <span className="text-[11px] text-slate-500">{item.sizeLabel || '—'}</span>
+                    </div>
+                    <h3 className="font-display font-700 text-[16px] text-navy-900 leading-snug mb-4">{item.title}</h3>
+                    <button
+                      type="button"
+                      onClick={() => handleDownload(item)}
+                      className="btn-pill btn-outline w-full justify-center text-[12.5px]"
+                    >
+                      <Download size={14} />
+                      Download
+                    </button>
                   </div>
-                  <h3 className="font-display font-700 text-[16px] text-navy-900 leading-snug mb-2">{item.title}</h3>
-                  <p className="text-[12px] text-slate-500 mb-4">Updated: {item.updated}</p>
-                  <Link href="/enquiry" className="btn-pill btn-outline w-full justify-center text-[12.5px]">
-                    <Download size={14} />
-                    Download
-                  </Link>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
 
             <div className="mt-8 rounded-2xl border border-indigo-200 bg-indigo-50/50 p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-start gap-2.5">
@@ -89,7 +110,7 @@ export default function DownloadPage() {
                   Need a project-specific document pack? Share your requirement and we will send the exact technical set.
                 </p>
               </div>
-              <Link href="/enquiry" className="btn-pill btn-primary text-[12.5px]">
+              <Link to="/enquiry" className="btn-pill btn-primary text-[12.5px]">
                 Request Document Pack
               </Link>
             </div>

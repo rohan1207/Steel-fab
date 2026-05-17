@@ -1,9 +1,10 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
-import { PRODUCTS } from '@/lib/data'
+import { fetchProductBySlug } from '@/lib/api'
+import { findStaticProduct, mapApiProductToDetail, normalizeProduct } from '@/lib/products'
 import Link from 'next/link'
 import {
   ArrowRight,
@@ -329,24 +330,37 @@ function SectionGrid({ items, icon: Icon }) {
 
 export default function ProductDetailPage({ params }) {
   const { slug } = params
-  const product = PRODUCTS.find((p) => p.id === slug)
-  const detail = productDetails[slug] || (product && {
-    title: product.title,
-    subtitle: product.description,
-    heroImage: '/steel2.jpg',
-    gallery: ['/steel2.jpg', '/steel3.jpg', '/steel5.jpg'],
-    intro: [product.description],
-    highlights: [
-      { label: 'Designed For', value: 'Industrial Fluid Transfer' },
-      { label: 'Manufacturing', value: 'Precision Engineered' },
-      { label: 'Support', value: 'End-to-End Assistance' },
-      { label: 'Customization', value: 'Available on Request' },
-    ],
-    features: ['High reliability', 'Low maintenance', 'Robust construction', 'Flexible configuration'],
-    applications: ['Process industries', 'Terminals', 'Storage & handling'],
-    specifications: ['Available in multiple sizes and materials'],
-    clients: ['Shared on request'],
-  })
+  const [apiProduct, setApiProduct] = useState(null)
+
+  useEffect(() => {
+    fetchProductBySlug(slug)
+      .then(setApiProduct)
+      .catch(() => setApiProduct(null))
+  }, [slug])
+
+  const product = apiProduct ? normalizeProduct(apiProduct) : findStaticProduct(slug)
+
+  const minimalDetail =
+    product &&
+    ({
+      title: product.title,
+      subtitle: product.description,
+      heroImage: product.image || '/steel2.jpg',
+      gallery: [product.image || '/steel2.jpg', '/steel3.jpg', '/steel5.jpg'],
+      intro: [product.description],
+      highlights: [
+        { label: 'Designed For', value: 'Industrial Fluid Transfer' },
+        { label: 'Manufacturing', value: 'Precision Engineered' },
+        { label: 'Support', value: 'End-to-End Assistance' },
+        { label: 'Customization', value: 'Available on Request' },
+      ],
+      features: ['High reliability', 'Low maintenance', 'Robust construction', 'Flexible configuration'],
+      applications: ['Process industries', 'Terminals', 'Storage & handling'],
+      specifications: ['Available in multiple sizes and materials'],
+      clients: ['Shared on request'],
+    })
+
+  const detail = mapApiProductToDetail(apiProduct) || productDetails[slug] || minimalDetail
 
   const tabs = useMemo(() => ['features', 'applications', 'specifications', 'clients'], [])
   const [activeTab, setActiveTab] = useState('features')
@@ -371,7 +385,7 @@ export default function ProductDetailPage({ params }) {
   return (
     <main>
       <Navbar />
-      <div className="pt-[72px]">
+      <div className="pt-nav">
         <section className="relative overflow-hidden bg-gradient-to-br from-navy-950 via-navy-900 to-indigo-900 text-white">
           <div className="absolute inset-0 opacity-25">
             <img src={detail.heroImage} alt={detail.title} className="w-full h-full object-cover" />

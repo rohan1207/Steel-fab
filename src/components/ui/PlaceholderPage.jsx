@@ -9,7 +9,7 @@ export default function PlaceholderPage({ title, subtitle, breadcrumb }) {
   return (
     <main>
       <Navbar />
-      <div className="min-h-screen pt-[72px] bg-slate-50/60 flex flex-col">
+      <div className="min-h-screen pt-nav bg-slate-50/60 flex flex-col">
         <div className="bg-gradient-to-br from-navy-950 to-indigo-900 text-white py-20 px-4">
           <div className="max-w-7xl mx-auto">
             {breadcrumb && (

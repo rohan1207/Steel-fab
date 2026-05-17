@@ -8,7 +8,7 @@ export default function ProductsPage() {
   return (
     <main>
       <Navbar />
-      <div className="pt-[72px]">
+      <div className="pt-nav">
         <div className="bg-gradient-to-br from-navy-950 to-indigo-900 text-white py-20 px-4">
           <div className="max-w-7xl mx-auto">
             <span className="inline-block text-[12px] font-600 tracking-widest uppercase text-indigo-300 mb-4">

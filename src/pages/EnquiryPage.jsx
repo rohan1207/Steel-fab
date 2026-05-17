@@ -1,20 +1,29 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import { CheckCircle2, Send } from 'lucide-react'
-import { getSendFormEndpoint } from '@/utils/sendFormApi'
+import { trackLead } from '@/lib/api'
 
 export default function EnquiryPage() {
+  const [searchParams] = useSearchParams()
   const [form, setForm] = useState({
     name: '',
     company: '',
     email: '',
     phone: '',
-    product: '',
+    product: searchParams.get('product') || '',
     quantity: '',
     city: '',
     message: '',
   })
+
+  useEffect(() => {
+    const product = searchParams.get('product') || ''
+    const job = searchParams.get('job') || ''
+    if (product) setForm((f) => ({ ...f, product }))
+    if (job) setForm((f) => ({ ...f, message: f.message || `Application for: ${job}` }))
+  }, [searchParams])
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState({ type: '', text: '' })
 
@@ -29,20 +38,25 @@ export default function EnquiryPage() {
     setStatus({ type: '', text: '' })
 
     try {
-      const endpoint = getSendFormEndpoint()
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          formType: 'website-enquiry',
-          submittedAt: new Date().toISOString(),
-          ...form,
-        }),
-      })
+      const productSlug = searchParams.get('slug') || ''
+      const inquiryType = searchParams.get('type')
+      const job = searchParams.get('job')
+      let leadType = 'general_enquiry'
+      if (inquiryType === 'vendor') leadType = 'purchase_vendor'
+      else if (job) leadType = 'career_application'
+      else if (productSlug || form.product) leadType = 'product_inquiry'
 
-      if (!res.ok) {
-        throw new Error('Failed to submit enquiry.')
-      }
+      await trackLead({
+        type: leadType,
+        sourcePage: '/enquiry',
+        productSlug,
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        company: form.company,
+        message: `Product: ${form.product}\nQty: ${form.quantity}\nCity: ${form.city}\n\n${form.message}`,
+        jobTitle: searchParams.get('job') || '',
+      })
 
       setStatus({ type: 'success', text: 'Thank you! Your enquiry has been submitted successfully.' })
       setForm({
@@ -68,7 +82,7 @@ export default function EnquiryPage() {
   return (
     <main>
       <Navbar />
-      <div className="pt-[72px] bg-slate-50/60 min-h-screen">
+      <div className="pt-nav bg-slate-50/60 min-h-screen">
         <section className="bg-white border-b border-slate-200">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-18">
             <h1 className="font-display font-700 text-[2rem] sm:text-[2.8rem] text-navy-900 tracking-tight mb-3">
