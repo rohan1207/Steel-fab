@@ -47,6 +47,12 @@
     "tailwind-merge": "^3.5.0",
     "three": "^0.178.0"
   },
+  "overrides": {
+    "react-simple-maps": {
+      "react": "$react",
+      "react-dom": "$react-dom"
+    }
+  },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@types/react": "^19.0.10",
