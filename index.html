@@ -18,6 +18,47 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="googlebot" content="index, follow" />
     <meta name="theme-color" content="#1e1b4b" />
+    <style>
+      #mobile-block-screen {
+        display: none;
+        min-height: 100dvh;
+        box-sizing: border-box;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        text-align: center;
+        color: #fff;
+        background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      }
+      #mobile-block-screen img {
+        height: 3rem;
+        width: auto;
+        margin: 0 auto 1.5rem;
+        object-fit: contain;
+      }
+      #mobile-block-screen h1 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin: 0 0 0.5rem;
+      }
+      #mobile-block-screen p {
+        font-size: 0.875rem;
+        line-height: 1.5;
+        color: #c7d2fe;
+        margin: 0;
+        max-width: 20rem;
+      }
+      @media (max-width: 1023px) {
+        #root {
+          display: none !important;
+        }
+        #mobile-block-screen {
+          display: flex !important;
+        }
+      }
+    </style>
     <meta name="geo.region" content="IN-MH" />
     <meta name="geo.placename" content="Pune, Maharashtra, India" />
     <link rel="canonical" href="https://steelfabeng.com/" />
@@ -74,6 +115,13 @@
     </script>
   </head>
   <body>
+    <div id="mobile-block-screen" aria-live="polite">
+      <img src="/logo.png" alt="Steelfab Engineering" />
+      <h1>Please view on desktop</h1>
+      <p>
+        The Steelfab Engineering website is best experienced on a desktop or laptop. Mobile support is coming soon.
+      </p>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

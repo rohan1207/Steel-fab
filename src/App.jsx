@@ -25,8 +25,8 @@ function ProductDetailRoute() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <MobileBlocker>
+    <MobileBlocker>
+      <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
@@ -51,8 +51,8 @@ export default function App() {
           <Route path="/about/vendor-certificate" element={<CertificatesPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </MobileBlocker>
-    </BrowserRouter>
+      </BrowserRouter>
+    </MobileBlocker>
   );
 }
  
